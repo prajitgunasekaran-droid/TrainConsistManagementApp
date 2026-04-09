@@ -1,21 +1,50 @@
 import java.util.ArrayList;
-import java.util.List;
 
 class TrainApp {
 
     public static void main(String[] args) {
 
-        // 🔹 Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // 🔹 Dynamic Initialization using ArrayList
-        List<String> bogies = new ArrayList<>();
+        // 🔹 Using ArrayList directly
+        ArrayList<String> bogies = new ArrayList<>();
 
-        // 🔹 Display Initial Bogie Count
-        System.out.println("Initializing train consist...");
-        System.out.println("Initial bogie count: " + bogies.size());
+        // 🔹 Adding bogies (Create)
+        bogies.add("Sleeper");
+        bogies.add("AC Chair");
+        bogies.add("First Class");
 
-        // 🔹 Continue Program
-        System.out.println("Program continues...");
+        System.out.println("\nBogies after adding:");
+        for (int i = 0; i < bogies.size(); i++) {
+            System.out.println((i + 1) + ". " + bogies.get(i));
+        }
+
+        // 🔹 Remove bogie using index (Delete)
+        bogies.remove(1); // removes "AC Chair"
+
+        System.out.println("\nAfter removing 2nd bogie:");
+        for (String b : bogies) {
+            System.out.println(b);
+        }
+
+        // 🔹 Check existence manually (without contains)
+        boolean found = false;
+        for (String b : bogies) {
+            if (b.equals("Sleeper")) {
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            System.out.println("\nSleeper bogie is present.");
+        } else {
+            System.out.println("\nSleeper bogie is NOT present.");
+        }
+
+        // 🔹 Final State
+        System.out.println("\nFinal Bogie List: " + bogies);
+
+        System.out.println("\nProgram continues...");
     }
 }
