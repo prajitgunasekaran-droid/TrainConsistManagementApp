@@ -1,15 +1,32 @@
 import java.util.*;
-import java.util.stream.*;
 
-class GoodsBogie {
+// -------------------------------
+// Custom Exception Class
+// -------------------------------
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+
+// -------------------------------
+// Passenger Bogie Class
+// -------------------------------
+class PassengerBogie {
     private String type;
-    private String cargo;
     private int capacity;
 
-    public GoodsBogie(String type, String cargo, int capacity) {
+    // Constructor with validation (Fail-Fast)
+    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
+        }
         this.type = type;
-        this.cargo = cargo;
         this.capacity = capacity;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public int getCapacity() {
@@ -18,62 +35,42 @@ class GoodsBogie {
 
     @Override
     public String toString() {
-        return type + "-" + cargo + "-" + capacity;
+        return "Type: " + type + ", Capacity: " + capacity;
     }
 }
 
-class PerformanceComparisonApp {
+// -------------------------------
+// Main Application Class
+// -------------------------------
+class BogieValidationApp {
 
     public static void main(String[] args) {
 
-        // Step 1: Create dataset (can scale this to large size)
-        List<GoodsBogie> bogies = new ArrayList<>();
+        List<PassengerBogie> bogieList = new ArrayList<>();
 
-        for (int i = 0; i < 100000; i++) {
-            bogies.add(new GoodsBogie("Box", "Grain", (i % 100) + 1));
+        // Test different cases
+        try {
+            // ✅ Valid bogies
+            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
+            PassengerBogie b2 = new PassengerBogie("AC", 64);
+
+            bogieList.add(b1);
+            bogieList.add(b2);
+
+            // ❌ Invalid bogie (negative capacity)
+            PassengerBogie b3 = new PassengerBogie("General", -10);
+            bogieList.add(b3);
+
+        } catch (InvalidCapacityException e) {
+            System.out.println("Exception Occurred: " + e.getMessage());
         }
 
-        // -------------------------------
-        // LOOP-BASED FILTERING
-        // -------------------------------
-        long startLoop = System.nanoTime();
-
-        List<GoodsBogie> loopResult = new ArrayList<>();
-        for (GoodsBogie bogie : bogies) {
-            if (bogie.getCapacity() > 60) {
-                loopResult.add(bogie);
-            }
+        // Display valid bogies created
+        System.out.println("\nValid Bogies in Train:");
+        for (PassengerBogie bogie : bogieList) {
+            System.out.println(bogie);
         }
 
-        long endLoop = System.nanoTime();
-        long loopTime = endLoop - startLoop;
-
-        // -------------------------------
-        // STREAM-BASED FILTERING
-        // -------------------------------
-        long startStream = System.nanoTime();
-
-        List<GoodsBogie> streamResult = bogies.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-
-        long endStream = System.nanoTime();
-        long streamTime = endStream - startStream;
-
-        // -------------------------------
-        // OUTPUT RESULTS
-        // -------------------------------
-        System.out.println("Loop Result Size: " + loopResult.size());
-        System.out.println("Stream Result Size: " + streamResult.size());
-
-        System.out.println("Loop Execution Time (ns): " + loopTime);
-        System.out.println("Stream Execution Time (ns): " + streamTime);
-
-        // Consistency Check
-        if (loopResult.size() == streamResult.size()) {
-            System.out.println("Results Match ✅");
-        } else {
-            System.out.println("Results Do NOT Match ❌");
-        }
+        System.out.println("\nProgram continues safely...");
     }
 }
