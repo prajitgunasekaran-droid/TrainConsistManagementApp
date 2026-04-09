@@ -1,50 +1,34 @@
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 class TrainApp {
 
     public static void main(String[] args) {
 
+        // 🔹 Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // 🔹 Using ArrayList directly
-        ArrayList<String> bogies = new ArrayList<>();
+        // 🔹 Create HashSet for Bogie IDs
+        Set<String> bogieIds = new HashSet<>();
 
-        // 🔹 Adding bogies (Create)
-        bogies.add("Sleeper");
-        bogies.add("AC Chair");
-        bogies.add("First Class");
+        // 🔹 Add Bogie IDs (including duplicates)
+        bogieIds.add("BG101");
+        bogieIds.add("BG102");
+        bogieIds.add("BG103");
+        bogieIds.add("BG101"); // duplicate
+        bogieIds.add("BG102"); // duplicate
 
-        System.out.println("\nBogies after adding:");
-        for (int i = 0; i < bogies.size(); i++) {
-            System.out.println((i + 1) + ". " + bogies.get(i));
+        System.out.println("\nBogie IDs after insertion (duplicates ignored):");
+
+        // 🔹 Display unique bogie IDs
+        for (String id : bogieIds) {
+            System.out.println(id);
         }
 
-        // 🔹 Remove bogie using index (Delete)
-        bogies.remove(1); // removes "AC Chair"
+        // 🔹 Final Set Display
+        System.out.println("\nFinal Unique Bogie Set: " + bogieIds);
 
-        System.out.println("\nAfter removing 2nd bogie:");
-        for (String b : bogies) {
-            System.out.println(b);
-        }
-
-        // 🔹 Check existence manually (without contains)
-        boolean found = false;
-        for (String b : bogies) {
-            if (b.equals("Sleeper")) {
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            System.out.println("\nSleeper bogie is present.");
-        } else {
-            System.out.println("\nSleeper bogie is NOT present.");
-        }
-
-        // 🔹 Final State
-        System.out.println("\nFinal Bogie List: " + bogies);
-
+        // 🔹 Continue Program
         System.out.println("\nProgram continues...");
     }
 }
